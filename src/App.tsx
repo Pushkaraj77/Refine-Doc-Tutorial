@@ -17,10 +17,14 @@ import dataProvider from "@refinedev/simple-rest";
 import { BrowserRouter, Route, Routes, Outlet } from "react-router-dom";
 import { MuiInferencer } from "@refinedev/inferencer/mui";
 import { BlogPostList } from "pages/blog-posts/list";
+import { BlogPostEdit } from "pages/blog-posts/edit";
+import { BlogPostShow } from "pages/blog-posts/show";
+import { BlogPostCreate } from "pages/blog-posts/create";
+import authProvider from "authProvider";
 
 const App: React.FC = () => {
   return (
-    <ThemeProvider theme={RefineThemes.Blue}>
+    <ThemeProvider theme={RefineThemes.BlueDark}>
       <CssBaseline />
       <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
       <RefineSnackbarProvider>
@@ -28,6 +32,7 @@ const App: React.FC = () => {
           <Refine
             notificationProvider={notificationProvider}
             routerProvider={routerBindings}
+            authProvider={authProvider}
             dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
             resources={[
               {
@@ -36,6 +41,9 @@ const App: React.FC = () => {
                 show: "/blog-posts/show/:id",
                 create: "/blog-posts/create",
                 edit: "/blog-posts/edit/:id",
+                meta: {
+                  canDelete: true,
+                }
               },
             ]}
             options={{
@@ -58,9 +66,9 @@ const App: React.FC = () => {
 
                 <Route path="blog-posts">
                   <Route index element={<BlogPostList />} />
-                  <Route path="show/:id" element={<MuiInferencer />} />
-                  <Route path="edit/:id" element={<MuiInferencer />} />
-                  <Route path="create" element={<MuiInferencer />} />
+                  <Route path="show/:id" element={<BlogPostShow />} />
+                  <Route path="edit/:id" element={<BlogPostEdit />} />
+                  <Route path="create" element={<BlogPostCreate />} />
                 </Route>
                 <Route path="*" element={<ErrorComponent />} />
               </Route>
